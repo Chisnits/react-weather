@@ -7,7 +7,7 @@ class WeatherContainer extends Component {
     super(props);
     this.state = {
       city: '',
-      weather: {}
+      weather: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,25 +25,33 @@ class WeatherContainer extends Component {
     console.log('A city was submitted: ' + this.state.city);
     this.props.getWeatherData(this.state.city)
   }
-  getCurrentWeather(){
-      // const oldPeople = inventors.filter(function(inventor){
-    //   if (inventor.year >= 1500 && inventor.year <= 1600){
-    //     return true; //keep it
-    //   } 
+  getCurrentWeather(list){
+    const currentTime = new Date();
+    const weatherArr = this.state.weather;
+    // const getCurrentWeather = weatherArr.filter(function(item){
+    //     if (item.dt_txt == currentTime){
+    //         return true;
+    //     }
     // })
-    // console.table(oldPeople);
-        const getTime = new Date();
+        const getCurrentWeather = weatherArr.sort(function(a,b) {
+            
+        })
   }
     componentWillReceiveProps(nextProps){
-        if (this.props != nextProps){
+        if (this.props = nextProps){
             this.setState({
-                weather: nextProps
+                weather: nextProps.data,
             })
         }
     }
-
     render() {
         console.log('state',this.state.weather);
+        console.log(typeof(this.props.data))
+        // const WeatherData = this.props.data.map((data,i) => (
+        //     <div>
+        //         <div>{data.name}</div>
+        //     </div>
+        // ))
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -53,6 +61,7 @@ class WeatherContainer extends Component {
                     </label>
                         <input type="submit" value="Submit" />
                 </form>
+                {/* <div>{this.props.loading ? <div>Loading ...</div> : WeatherData}</div> */}
             </div>
         );
     }
@@ -65,3 +74,22 @@ function mapStateToProps(state) {
   }
 }
 export default connect(mapStateToProps, {getWeatherData})(WeatherContainer);
+
+
+//FIVE-DAY-FORECAST
+// componentWillReceiveProps(nextProps){
+//         if (this.props = nextProps){
+//             this.setState({
+//                 weather: nextProps,
+//                 list: nextProps.data.list
+//             })
+//         }
+//     }
+//     render() {
+//         // console.log('state',this.state.weather.list);
+//         console.log(new Date())
+//         console.log(this.state.list);
+//         const timestamp = this.state.list.map((data, i) => {
+//             return data.dt_txt;
+//         })
+//         console.log(timestamp)
