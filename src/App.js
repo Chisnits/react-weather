@@ -26,7 +26,6 @@ class App extends Component {
     console.log('A city was submitted: ' + this.state.city);
   
     this.props.getWeatherData(this.state.city)
-    console.log('here is the city' + this.state.city);
   }
 
   render() {
