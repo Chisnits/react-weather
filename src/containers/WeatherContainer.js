@@ -6,62 +6,70 @@ class WeatherContainer extends Component {
     constructor(props) {
     super(props);
     this.state = {
-      city: '',
-      weather: []
+      location: '',
+      weather: {},
+      temperature: '',
+      humidity: '',
+      description: '',
+      icon: 'http://openweathermap.org/img/w/'
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   handleChange(event) {
     this.setState({
-      city: event.target.value
+      location: event.target.value
     });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('A city was submitted: ' + this.state.city);
-    this.props.getWeatherData(this.state.city)
+    console.log('A city was submitted: ' + this.state.location);
+    this.props.getWeatherData(this.state.location)
   }
-  getCurrentWeather(list){
-    const currentTime = new Date();
-    const weatherArr = this.state.weather;
-    // const getCurrentWeather = weatherArr.filter(function(item){
-    //     if (item.dt_txt == currentTime){
-    //         return true;
-    //     }
-    // })
-        const getCurrentWeather = weatherArr.sort(function(a,b) {
-            
-        })
+  handleReset() {
+    this.setState({
+        location: '',
+        weather: {},
+        temperature: '',
+        humidity: '',
+        description: '',
+        icon: ''
+    })
   }
     componentWillReceiveProps(nextProps){
-        if (this.props = nextProps){
+        var iconBaseUrl = 'http://openweathermap.org/img/w/'
+        if (nextProps.data !== this.props.data){
             this.setState({
                 weather: nextProps.data,
+                temperature: Math.round(nextProps.data.main.temp),
+                humidity: nextProps.data.main.humidity,
+                description: nextProps.data.weather[0].description,
+                icon: 'http://openweathermap.org/img/w/' + nextProps.data.weather[0].icon + '.png'
             })
         }
     }
     render() {
-        console.log('state',this.state.weather);
-        console.log(typeof(this.props.data))
-        // const WeatherData = this.props.data.map((data,i) => (
-        //     <div>
-        //         <div>{data.name}</div>
-        //     </div>
-        // ))
+        console.log(this.state.weather);
+        console.log(this.state.icon)
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         City:
-                        <input type="text" value={this.state.city} onChange={this.handleChange} />
+                        <input type="text" value={this.state.location} onChange={this.handleChange} />
                     </label>
                         <input type="submit" value="Submit" />
+                        <input type="reset" value="Reset" onClick={this.handleReset}/>
                 </form>
-                {/* <div>{this.props.loading ? <div>Loading ...</div> : WeatherData}</div> */}
+                 <div>City: {this.props.loading ? <div>Loading ...</div> : this.state.weather.name}</div> 
+                 <div>Current Temperature: {this.state.temperature}</div>
+                 <div>Current Humidity: {this.state.humidity}</div>
+                 <div>Weather Description: {this.state.description}</div>
+                 <img src="{this.state.icon}" />
             </div>
         );
     }
