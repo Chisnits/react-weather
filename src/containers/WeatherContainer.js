@@ -40,6 +40,9 @@ class WeatherContainer extends Component {
         icon: ''
     })
   }
+ handleCoolness(cool){
+     return 'chase is' + cool
+ };
     componentWillReceiveProps(nextProps){
         var iconBaseUrl = 'http://openweathermap.org/img/w/'
         if (nextProps.data !== this.props.data){
